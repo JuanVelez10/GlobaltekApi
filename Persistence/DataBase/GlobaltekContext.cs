@@ -6,16 +6,24 @@ namespace Persistence.DataBase
 {
     public class GlobaltekContext : DbContext
     {
-        public GlobaltekContext() {}
 
         public GlobaltekContext(DbContextOptions<GlobaltekContext> options): base(options){ }
 
-        public DbSet<Product> Product { get; set; }
-        public DbSet<Person> Person { get; set; }
-        public DbSet<Discount> Discount { get; set; }
-        public DbSet<Product> Tax { get; set; }
-        public DbSet<Bill> Bill { get; set; }
-        public DbSet<BillDetail> BillDetail { get; set; }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Message>().HasKey(table => new {
+                table.Code,
+                table.MessageType
+            });
+        }
+
+        public virtual DbSet<Product>? Product { get; set; }
+        public virtual DbSet<Person>? Person { get; set; }
+        public virtual DbSet<Discount>? Discount { get; set; }
+        public virtual DbSet<Product>? Tax { get; set; }
+        public virtual DbSet<Bill>? Bill { get; set; }
+        public virtual DbSet<BillDetail>? BillDetail { get; set; }
+        public virtual DbSet<Message>? Message { get; set; }
 
     }
 

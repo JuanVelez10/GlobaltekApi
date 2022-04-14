@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Persistence;
 using Persistence.DataBase;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +11,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<GlobaltekContext>(options => options.UseSqlServer(builder.Configuration.GetSection("ConnectionStrings")["GobaltekDB"], b => b.MigrationsAssembly("Api")));
+builder.Services.AddPersistenceServices(builder.Configuration);
+
 
 var app = builder.Build();
 

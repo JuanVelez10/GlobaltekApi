@@ -12,8 +12,8 @@ using Persistence.DataBase;
 namespace Api.Migrations
 {
     [DbContext(typeof(GlobaltekContext))]
-    [Migration("20220414202820_GlobltkDB")]
-    partial class GlobltkDB
+    [Migration("20220414221320_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -137,6 +137,23 @@ namespace Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Discount");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Message", b =>
+                {
+                    b.Property<int>("Code")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MessageType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Code", "MessageType");
+
+                    b.ToTable("Message");
                 });
 
             modelBuilder.Entity("Domain.Entities.Person", b =>

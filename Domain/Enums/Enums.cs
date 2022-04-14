@@ -18,7 +18,13 @@
             Credit = 3 
         }
 
-
+        //Types of api response messages
+        public enum MessageType
+        {
+            None = 0,
+            Success = 1,
+            Error = 2
+        }
 
 
     }

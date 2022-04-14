@@ -137,6 +137,23 @@ namespace Api.Migrations
                     b.ToTable("Discount");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Message", b =>
+                {
+                    b.Property<int>("Code")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MessageType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Code", "MessageType");
+
+                    b.ToTable("Message");
+                });
+
             modelBuilder.Entity("Domain.Entities.Person", b =>
                 {
                     b.Property<Guid?>("Id")
