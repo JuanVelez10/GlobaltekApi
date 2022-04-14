@@ -10,6 +10,7 @@
             Client = 2
         }
 
+        // To know the payment of an bill
         public enum PaymentType
         {
             Cash = 1,
