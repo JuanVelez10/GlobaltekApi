@@ -3,20 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Domain.Enums.Enums;
 
-namespace Application.Common
+namespace Application.References
 {
-    public class ResponseBase<T>
+    public class BaseResponse<T>
     {
-        public ResponseBase()
+        public BaseResponse()
         {
             ResponseTime = DateTime.Now;
             Message = "";
             Code = 0;
+            MessageType = MessageType.None;
         }
+
         public DateTime ResponseTime { get; set; }
         public int Code { get; set; }
         public string Message { get; set; }
+        public MessageType MessageType { get; set; }
         public T Data { get; set; }
     }
 }

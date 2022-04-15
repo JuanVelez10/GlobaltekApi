@@ -25,7 +25,7 @@ namespace Persistence.Repositories
 
         public List<Message> GetAll()
         {
-            throw new NotImplementedException();
+           return dbContext.Message.ToList();
         }
 
         public Message Insert(Message @object)

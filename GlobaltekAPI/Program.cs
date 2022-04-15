@@ -1,6 +1,6 @@
 using Application;
 using AutoMapper;
-using Domain.Models;
+using Domain.References;
 using Infrastructure;
 using Infrastructure.Services.Mapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -21,7 +21,6 @@ builder.Services.AddMvc();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 //Mapper Configuration
 var mapperConfig = new MapperConfiguration(m =>
@@ -73,6 +72,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = builder.Configuration.GetSection("Jwt")["Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("Jwt")["Key"]))
         };
+
     });
 
 //Swagger configuration token
@@ -96,7 +96,7 @@ builder.Services.AddSwaggerGen(setup =>
     };
 
     setup.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
-
+    setup.SwaggerDoc("v1", new OpenApiInfo { Title = "Globaltek", Version = "v1" });
     setup.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         { jwtSecurityScheme, Array.Empty<string>() }
@@ -108,7 +108,6 @@ builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -116,22 +115,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    
 }
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
+//Exception Control
 
 using var loggerFactory = LoggerFactory.Create(loggingBuilder => loggingBuilder.SetMinimumLevel(LogLevel.Trace).AddConsole());
 ILogger logger = loggerFactory.CreateLogger<Program>();
 
-
-//Exception Control
 app.UseExceptionHandler(appError =>
 {
     appError.Run(async context =>
@@ -159,3 +149,16 @@ app.UseExceptionHandler(appError =>
 
     });
 });
+
+
+app.UseHttpsRedirection();
+app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
+app.Run();
+
