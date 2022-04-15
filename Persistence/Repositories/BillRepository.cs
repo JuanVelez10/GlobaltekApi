@@ -1,11 +1,6 @@
-﻿using Domain.Entities;
+﻿using Application.Contracts.Persistence;
+using Domain.Entities;
 using Persistence.DataBase;
-using Persistence.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persistence.Repositories
 {
@@ -25,12 +20,12 @@ namespace Persistence.Repositories
 
         public Bill Get(Guid? id)
         {
-            throw new NotImplementedException();
+            return dbContext.Bill.Where(x => x.Id == id).FirstOrDefault();
         }
 
         public List<Bill> GetAll()
         {
-            throw new NotImplementedException();
+            return dbContext.Bill.ToList();
         }
 
         public Bill Insert(Bill @object)

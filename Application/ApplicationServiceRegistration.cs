@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.Interfaces;
+using Application.Services;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Application
 {
@@ -10,14 +9,8 @@ namespace Application
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
-            //services
-            //    .AddTransient<IParametersService, ParametersService>()
-            //    .AddTransient<IOrdersService, OrdersService>()
-            //    .AddTransient<ITemplateService, TemplateService>()
-            //    .AddTransient<IAwardsInventoryService, AwardsInventoryService>()
-            //    .AddTransient<IAwardsService, AwardsService>()
-            //    .AddTransient<IRepositoryService, RepositoryService>()
-            //    .AddSingleton<ILoggerService, LoggerService>();
+            services.AddTransient<IBillServices, BillServices>();
+
             return services;
         }
 

@@ -4,40 +4,38 @@ using Persistence.DataBase;
 
 namespace Persistence.Repositories
 {
-    public class PersonRepository : IGenericRepository<Person>
+    public class MessageRepository : IGenericRepository<Message>
     {
-
         private readonly GlobaltekContext dbContext;
 
-        public PersonRepository(GlobaltekContext dbContext)
+        public MessageRepository(GlobaltekContext dbContext)
         {
             this.dbContext = dbContext;
         }
 
-        public Person Delete(Guid? id)
+        public Message Delete(Guid? id)
         {
             throw new NotImplementedException();
         }
 
-        public Person Get(Guid? id)
-        {
-            return dbContext.Person.Where(x => x.Id == id).FirstOrDefault();
-        }
-
-        public List<Person> GetAll()
-        {
-            return dbContext.Person.ToList();
-        }
-
-        public Person Insert(Person @object)
+        public Message Get(Guid? id)
         {
             throw new NotImplementedException();
         }
 
-        public Person Update(Person @object)
+        public List<Message> GetAll()
         {
             throw new NotImplementedException();
         }
 
+        public Message Insert(Message @object)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Message Update(Message @object)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

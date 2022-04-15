@@ -1,6 +1,6 @@
-﻿using Domain.Entities;
+﻿using Application.Contracts.Persistence;
+using Domain.Entities;
 using Persistence.DataBase;
-using Persistence.Interfaces;
 
 namespace Persistence.Repositories
 {
