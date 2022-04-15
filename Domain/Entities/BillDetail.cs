@@ -8,7 +8,6 @@ namespace Domain.Entities
     {
         [Key]
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid? Id { get; set; }
 
         [Required]

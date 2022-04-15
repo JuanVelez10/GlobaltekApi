@@ -14,8 +14,14 @@ namespace Persistence
         {
             services.AddDbContext<GlobaltekContext>(options => options.UseSqlServer(configuration.GetConnectionString("GobaltekDB"), b => b.MigrationsAssembly("Api")));
 
-            services.AddTransient<IGenericRepository<Person>, PersonRepository>();
-            services.AddTransient<IGenericRepository<Bill>, BillRepository>();
+            services
+                .AddTransient<IGenericRepository<Person>, PersonRepository>()
+                .AddTransient<IGenericRepository<Bill>, BillRepository>()
+                .AddTransient<IGenericRepository<BillDetail>, BillDetailRepository>()
+                .AddTransient<IGenericRepository<Product>, ProductRepository>()
+                .AddTransient<IGenericRepository<Tax>, TaxRepository>()
+                .AddTransient<IGenericRepository<Discount>, DiscountRepository>()
+                .AddTransient<IGenericRepository<Message>, MessageRepository>();
 
             return services;
         }

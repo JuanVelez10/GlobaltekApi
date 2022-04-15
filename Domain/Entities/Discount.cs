@@ -6,7 +6,7 @@ namespace Domain.Entities
     public class Discount
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
         public Guid? Id { get; set; }
 
         [Required]

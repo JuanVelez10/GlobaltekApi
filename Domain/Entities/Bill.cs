@@ -8,10 +8,10 @@ namespace Domain.Entities
     {
         [Key]
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid? Id { get; set; }
 
         [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [RegularExpression("[0-9]*", ErrorMessage = "Only numeric value")]
         public int Number { get; set; }
 

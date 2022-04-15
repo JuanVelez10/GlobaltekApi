@@ -7,7 +7,7 @@ namespace Domain.Entities
     public class Person
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
         public Guid? Id { get; set; }
 
         [Required]
