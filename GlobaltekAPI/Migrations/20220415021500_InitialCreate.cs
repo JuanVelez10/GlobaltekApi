@@ -89,7 +89,8 @@ namespace Api.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Number = table.Column<int>(type: "int", nullable: false),
+                    Number = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PaymentType = table.Column<int>(type: "int", nullable: false),
                     IdPerson = table.Column<Guid>(type: "uniqueidentifier", nullable: false),

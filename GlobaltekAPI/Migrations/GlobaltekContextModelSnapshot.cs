@@ -50,7 +50,10 @@ namespace Api.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Number")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Number"), 1L, 1);
 
                     b.Property<int>("PaymentType")
                         .HasColumnType("int");
