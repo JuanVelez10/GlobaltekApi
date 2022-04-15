@@ -1,5 +1,18 @@
 using Application;
+using AutoMapper;
+using Domain.Models;
+using Infrastructure;
+using Infrastructure.Services.Mapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using Persistence;
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,10 +23,91 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//Mapper Configuration
+var mapperConfig = new MapperConfiguration(m =>
+{
+    m.AddProfile(new MappingProfile());
+});
+
+IMapper mapper = mapperConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
+
+//Corn Configurate 
+builder.Services.AddHealthChecks().AddCheck("ping", () => {
+    try
+    {
+        using (var ping = new Ping())
+        {
+            var reply = ping.Send("localhost");
+            if (reply.Status != IPStatus.Success)
+            {
+                return HealthCheckResult.Unhealthy();
+            }
+
+            if (reply.RoundtripTime >= 100)
+            {
+                return HealthCheckResult.Degraded();
+            }
+
+            return HealthCheckResult.Healthy();
+        }
+    }
+    catch
+    {
+        return HealthCheckResult.Unhealthy();
+    }
+});
+
+//Authentication Configuration
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration.GetSection("Jwt")["Issuer"],
+            ValidAudience = builder.Configuration.GetSection("Jwt")["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("Jwt")["Key"]))
+        };
+    });
+
+//Swagger configuration token
+builder.Services.AddSwaggerGen(setup =>
+{
+    // Include 'SecurityScheme' to use JWT Authentication
+    var jwtSecurityScheme = new OpenApiSecurityScheme
+    {
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        Name = "JWT Authentication",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Description = "Put **_ONLY_** your JWT Bearer token on textbox below!",
+
+        Reference = new OpenApiReference
+        {
+            Id = JwtBearerDefaults.AuthenticationScheme,
+            Type = ReferenceType.SecurityScheme
+        }
+    };
+
+    setup.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
+
+    setup.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        { jwtSecurityScheme, Array.Empty<string>() }
+    });
+
+});
+
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
-builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
@@ -22,6 +116,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    
 }
 
 app.UseHttpsRedirection();
@@ -31,3 +126,36 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+using var loggerFactory = LoggerFactory.Create(loggingBuilder => loggingBuilder.SetMinimumLevel(LogLevel.Trace).AddConsole());
+ILogger logger = loggerFactory.CreateLogger<Program>();
+
+
+//Exception Control
+app.UseExceptionHandler(appError =>
+{
+    appError.Run(async context =>
+    {
+        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        context.Response.ContentType = "application/json";
+
+        var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+        if (contextFeature != null)
+        {
+
+            logger.LogError(contextFeature.Error.Message);
+
+            var metadata = new ErrorResponse
+            {
+                Code = context.Response.StatusCode,
+                Message = "Oops, an error has occurred! Please contact our support team.",
+                StackTrace = contextFeature.Error.StackTrace,
+                ExceptionMessage = contextFeature.Error.Message,
+                ExceptionType = contextFeature.Error.GetType().FullName
+            };
+
+            await context.Response.WriteAsync(JsonConvert.SerializeObject(metadata));
+        }
+
+    });
+});
