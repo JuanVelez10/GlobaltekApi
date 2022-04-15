@@ -1,5 +1,4 @@
 ﻿using Application.Interfaces;
-using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -21,15 +20,13 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var bills = new List<Bill>(); 
-
-            await Task.Run(() =>
+            var bills = await Task.Run(() =>
             {
-                var bills = billService.GetAllBill().Result;
+                return billService.GetAllBill().Result;
             });
 
             if (bills.Any()) return Ok(bills);
-            return BadRequest(bills);
+            return NotFound(bills);
         }
 
         // GET api/<BillController>/5

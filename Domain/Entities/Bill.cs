@@ -23,17 +23,8 @@ namespace Domain.Entities
         public PaymentType PaymentType { get; set; }
 
         [Required]
-        public Guid? IdPerson { get; set; }
-
-        [Required]
         [DataType(DataType.Currency)]
         public decimal SubTotal { get; set; }
-
-        [Required]
-        public Guid? IdDiscount { get; set; }
-
-        [Required]
-        public Guid? IdTax { get; set; }
 
         [Required]
         [DataType(DataType.Currency)]
@@ -47,9 +38,18 @@ namespace Domain.Entities
         [DataType(DataType.Currency)]
         public decimal Total { get; set; }
 
-        public Person? Person { get; set; }
-        public Tax? Tax { get; set; }
-        public Discount? Discount { get; set; }
+        [Required]
+        public Guid? PersonId { get; set; }
+
+        [Required]
+        public Guid? TaxId { get; set; }
+
+        [Required]
+        public Guid? DiscountId { get; set; }
+
+        public virtual Person? Person { get; set; }
+        public virtual Tax? Tax { get; set; }
+        public virtual Discount? Discount { get; set; }
         public ICollection<BillDetail>? BillDetails { get; set; }
 
     }

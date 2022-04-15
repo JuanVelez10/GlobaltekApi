@@ -14,6 +14,7 @@ namespace Persistence
         {
             services.AddDbContext<GlobaltekContext>(options => options.UseSqlServer(configuration.GetConnectionString("GobaltekDB"), b => b.MigrationsAssembly("Api")));
 
+
             services
                 .AddTransient<IGenericRepository<Person>, PersonRepository>()
                 .AddTransient<IGenericRepository<Bill>, BillRepository>()

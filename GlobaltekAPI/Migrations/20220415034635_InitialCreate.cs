@@ -93,16 +93,13 @@ namespace Api.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PaymentType = table.Column<int>(type: "int", nullable: false),
-                    IdPerson = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SubTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    IdDiscount = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdTax = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DiscountTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     TaxTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PersonId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    TaxId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DiscountId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    PersonId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TaxId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DiscountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -111,17 +108,20 @@ namespace Api.Migrations
                         name: "FK_Bill_Discount_DiscountId",
                         column: x => x.DiscountId,
                         principalTable: "Discount",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Bill_Person_PersonId",
                         column: x => x.PersonId,
                         principalTable: "Person",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Bill_Tax_TaxId",
                         column: x => x.TaxId,
                         principalTable: "Tax",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -129,12 +129,10 @@ namespace Api.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdBill = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdProduct = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Amount = table.Column<int>(type: "int", nullable: false),
                     UnitCost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    BillId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    BillId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -143,12 +141,14 @@ namespace Api.Migrations
                         name: "FK_BillDetail_Bill_BillId",
                         column: x => x.BillId,
                         principalTable: "Bill",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_BillDetail_Product_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Product",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

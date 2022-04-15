@@ -15,12 +15,13 @@ namespace Persistence.DataBase
                 table.Code,
                 table.MessageType
             });
+
         }
 
         public virtual DbSet<Product>? Product { get; set; }
         public virtual DbSet<Person>? Person { get; set; }
         public virtual DbSet<Discount>? Discount { get; set; }
-        public virtual DbSet<Product>? Tax { get; set; }
+        public virtual DbSet<Tax>? Tax { get; set; }
         public virtual DbSet<Bill>? Bill { get; set; }
         public virtual DbSet<BillDetail>? BillDetail { get; set; }
         public virtual DbSet<Message>? Message { get; set; }

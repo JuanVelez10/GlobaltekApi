@@ -11,12 +11,6 @@ namespace Domain.Entities
         public Guid? Id { get; set; }
 
         [Required]
-        public Guid? IdBill { get; set; }
-
-        [Required]
-        public Guid? IdProduct { get; set; }
-
-        [Required]
         [RegularExpression("[0-9]*", ErrorMessage = "Only numeric value")]
         public int Amount { get; set; }
 
@@ -24,8 +18,14 @@ namespace Domain.Entities
         [DataType(DataType.Currency)]
         public decimal UnitCost { get; set; }
 
-        public Bill? Bill { get; set; }
-        public Product? Product { get; set; }
+        [Required]
+        public Guid? BillId { get; set; }
+
+        [Required]
+        public Guid? ProductId { get; set; }
+
+        public virtual Bill? Bill { get; set; }
+        public virtual Product? Product { get; set; }
 
     }
 }

@@ -12,7 +12,7 @@ using Persistence.DataBase;
 namespace Api.Migrations
 {
     [DbContext(typeof(GlobaltekContext))]
-    [Migration("20220415021500_InitialCreate")]
+    [Migration("20220415034635_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,22 +34,11 @@ namespace Api.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("DiscountId")
+                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("DiscountTotal")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<Guid?>("IdDiscount")
-                        .IsRequired()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("IdPerson")
-                        .IsRequired()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("IdTax")
-                        .IsRequired()
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Number")
                         .ValueGeneratedOnAdd()
@@ -61,12 +50,14 @@ namespace Api.Migrations
                         .HasColumnType("int");
 
                     b.Property<Guid?>("PersonId")
+                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("SubTotal")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid?>("TaxId")
+                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("TaxTotal")
@@ -96,17 +87,11 @@ namespace Api.Migrations
                         .HasColumnType("int");
 
                     b.Property<Guid?>("BillId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("IdBill")
-                        .IsRequired()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("IdProduct")
                         .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("ProductId")
+                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("UnitCost")
@@ -250,15 +235,21 @@ namespace Api.Migrations
                 {
                     b.HasOne("Domain.Entities.Discount", "Discount")
                         .WithMany()
-                        .HasForeignKey("DiscountId");
+                        .HasForeignKey("DiscountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Entities.Person", "Person")
                         .WithMany("Bills")
-                        .HasForeignKey("PersonId");
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Entities.Tax", "Tax")
                         .WithMany()
-                        .HasForeignKey("TaxId");
+                        .HasForeignKey("TaxId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Discount");
 
@@ -271,11 +262,15 @@ namespace Api.Migrations
                 {
                     b.HasOne("Domain.Entities.Bill", "Bill")
                         .WithMany("BillDetails")
-                        .HasForeignKey("BillId");
+                        .HasForeignKey("BillId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Entities.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Bill");
 

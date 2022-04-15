@@ -22,7 +22,9 @@ namespace Application.Services
 
         public async Task<List<Bill>> GetAllBill()
         {
-            return billRepository.GetAll();
+            var bills = billRepository.GetAll();
+
+            return bills;
         }
 
 
