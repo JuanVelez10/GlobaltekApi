@@ -4,7 +4,7 @@ using Persistence.DataBase;
 
 namespace Persistence.Repositories
 {
-    public class ProductRepository : IGenericRepository<Product>
+    public class ProductRepository : IProductRepository
     {
         private readonly GlobaltekContext dbContext;
 
@@ -13,29 +13,15 @@ namespace Persistence.Repositories
             this.dbContext = dbContext;
         }
 
-        public Product Delete(Guid? id)
-        {
-            throw new NotImplementedException();
-        }
-
         public Product Get(Guid? id)
         {
-            throw new NotImplementedException();
+            return dbContext.Product.Where(x => x.Id == id).FirstOrDefault();
         }
 
         public List<Product> GetAll()
         {
-            throw new NotImplementedException();
+            return dbContext.Product.ToList();
         }
 
-        public Product Insert(Product @object)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Product Update(Product @object)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

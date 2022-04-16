@@ -2,11 +2,7 @@
 using AutoMapper;
 using Domain.Dtos;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Infrastructure.Services.Mapper
 {
@@ -23,6 +19,17 @@ namespace Infrastructure.Services.Mapper
         {
             return mapper.Map<BillBasic>(bill);
         }
+
+        public BillInfo ConvertBillToBillInfo(Bill bill)
+        {
+            return mapper.Map<BillInfo>(bill);
+        }
+
+        public BillDetailInfo ConvertBillDetailToBillDetailInfo(BillDetail billDetail)
+        {
+            return mapper.Map<BillDetailInfo>(billDetail);
+        }
+        
 
     }
 }

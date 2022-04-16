@@ -9,6 +9,7 @@ namespace Infrastructure.Services.Mapper
         public MappingProfile()
         {
             CreateMap<Bill, BillBasic>();
+            CreateMap<Bill, BillInfo>();
         }
 
     }

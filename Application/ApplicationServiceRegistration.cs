@@ -13,7 +13,10 @@ namespace Application
             services.AddTransient<IPersonServices, PersonServices>();
             services.AddTransient<IMessageServices, MessageServices>();
             services.AddTransient<IBillDetailServices, BillDetailServices>();
-            
+            services.AddTransient<IDiscountServices, DiscountServices>();
+            services.AddTransient<IProductServices, ProductServices>();
+            services.AddTransient<ITaxServices, TaxServices>();
+
             return services;
         }
 

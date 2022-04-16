@@ -4,7 +4,7 @@ using Persistence.DataBase;
 
 namespace Persistence.Repositories
 {
-    public class TaxRepository : IGenericRepository<Tax>
+    public class TaxRepository : ITaxRepository
     {
         private readonly GlobaltekContext dbContext;
 
@@ -13,29 +13,15 @@ namespace Persistence.Repositories
             this.dbContext = dbContext;
         }
 
-        public Tax Delete(Guid? id)
-        {
-            throw new NotImplementedException();
-        }
-
         public Tax Get(Guid? id)
         {
-            throw new NotImplementedException();
+            return dbContext.Tax.Where(x => x.Id == id).FirstOrDefault();
         }
 
         public List<Tax> GetAll()
         {
-            throw new NotImplementedException();
+            return dbContext.Tax.ToList();
         }
 
-        public Tax Insert(Tax @object)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Tax Update(Tax @object)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -1,5 +1,7 @@
-﻿using Application.Contracts.Persistence;
+﻿using Application.Contracts.Infrastructure;
+using Application.Contracts.Persistence;
 using Application.Interfaces;
+using Domain.Dtos;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -11,16 +13,18 @@ namespace Application.Services
 {
     public class BillDetailServices : IBillDetailServices
     {
-        private readonly IGenericRepository<BillDetail> billDetailRepository;
+        private readonly IBillDetailRepository billDetailRepository;
+        private readonly IMapperService mapper;
 
-        public BillDetailServices(IGenericRepository<BillDetail> billDetailRepository)
+        public BillDetailServices(IBillDetailRepository billDetailRepository, IMapperService mapper)
         {
             this.billDetailRepository = billDetailRepository;
+            this.mapper = mapper;
         }
 
-        public async Task<List<BillDetail>> GetAllBillDetail()
+        public async Task<List<BillDetailInfo>> GetAllBillDetailInfo(Guid? id)
         {
-            return billDetailRepository.GetAll();
+            return billDetailRepository.GetAllForIdBill(id).Select(x => mapper.ConvertBillDetailToBillDetailInfo(x)).ToList();
         }
     }
 }

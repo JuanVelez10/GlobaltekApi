@@ -4,7 +4,7 @@ using Persistence.DataBase;
 
 namespace Persistence.Repositories
 {
-    public class PersonRepository : IGenericRepository<Person>
+    public class PersonRepository : IPersonRepository
     {
 
         private readonly GlobaltekContext dbContext;
@@ -12,11 +12,6 @@ namespace Persistence.Repositories
         public PersonRepository(GlobaltekContext dbContext)
         {
             this.dbContext = dbContext;
-        }
-
-        public Person Delete(Guid? id)
-        {
-            throw new NotImplementedException();
         }
 
         public Person Get(Guid? id)
@@ -27,16 +22,6 @@ namespace Persistence.Repositories
         public List<Person> GetAll()
         {
             return dbContext.Person.ToList();
-        }
-
-        public Person Insert(Person @object)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Person Update(Person @object)
-        {
-            throw new NotImplementedException();
         }
 
     }

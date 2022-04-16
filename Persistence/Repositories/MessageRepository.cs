@@ -4,7 +4,7 @@ using Persistence.DataBase;
 
 namespace Persistence.Repositories
 {
-    public class MessageRepository : IGenericRepository<Message>
+    public class MessageRepository : IMessageRepository
     {
         private readonly GlobaltekContext dbContext;
 
@@ -13,29 +13,10 @@ namespace Persistence.Repositories
             this.dbContext = dbContext;
         }
 
-        public Message Delete(Guid? id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Message Get(Guid? id)
-        {
-            throw new NotImplementedException();
-        }
-
         public List<Message> GetAll()
         {
            return dbContext.Message.ToList();
         }
 
-        public Message Insert(Message @object)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Message Update(Message @object)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

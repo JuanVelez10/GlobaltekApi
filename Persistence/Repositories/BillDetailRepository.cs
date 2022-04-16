@@ -4,7 +4,7 @@ using Persistence.DataBase;
 
 namespace Persistence.Repositories
 {
-    public class BillDetailRepository : IGenericRepository<BillDetail>
+    public class BillDetailRepository : IBillDetailRepository
     {
         private readonly GlobaltekContext dbContext;
 
@@ -13,29 +13,10 @@ namespace Persistence.Repositories
             this.dbContext = dbContext;
         }
 
-        public BillDetail Delete(Guid? id)
+        public List<BillDetail> GetAllForIdBill(Guid? id)
         {
-            throw new NotImplementedException();
+            return dbContext.BillDetail.Where(x=> x.BillId == id).ToList();
         }
 
-        public BillDetail Get(Guid? id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<BillDetail> GetAll()
-        {
-            return dbContext.BillDetail.ToList();
-        }
-
-        public BillDetail Insert(BillDetail @object)
-        {
-            throw new NotImplementedException();
-        }
-
-        public BillDetail Update(BillDetail @object)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

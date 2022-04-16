@@ -16,13 +16,13 @@ namespace Persistence
 
 
             services
-                .AddTransient<IGenericRepository<Person>, PersonRepository>()
-                .AddTransient<IGenericRepository<Bill>, BillRepository>()
-                .AddTransient<IGenericRepository<BillDetail>, BillDetailRepository>()
-                .AddTransient<IGenericRepository<Product>, ProductRepository>()
-                .AddTransient<IGenericRepository<Tax>, TaxRepository>()
-                .AddTransient<IGenericRepository<Discount>, DiscountRepository>()
-                .AddTransient<IGenericRepository<Message>, MessageRepository>();
+                .AddTransient<IPersonRepository, PersonRepository>()
+                .AddTransient<IBillRepository, BillRepository>()
+                .AddTransient<IBillDetailRepository, BillDetailRepository>()
+                .AddTransient<IProductRepository, ProductRepository>()
+                .AddTransient<ITaxRepository, TaxRepository>()
+                .AddTransient<IDiscountRepository, DiscountRepository>()
+                .AddTransient<IMessageRepository, MessageRepository>();
 
             return services;
         }

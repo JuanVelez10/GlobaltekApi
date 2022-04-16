@@ -8,7 +8,7 @@ namespace Application.Interfaces
     {
         Task<List<BillBasic>> GetAllBillBasic();
 
-        Task<Bill> GetBill(Guid? id);
+        Task<BillInfo> GetBill(Guid? id);
 
     }
 }

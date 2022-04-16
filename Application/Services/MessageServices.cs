@@ -8,9 +8,9 @@ namespace Application.Services
 {
     public class MessageServices: IMessageServices
     {
-        private readonly IGenericRepository<Message> messageRepository;
+        private readonly IMessageRepository messageRepository;
 
-        public MessageServices(IGenericRepository<Message> messageRepository)
+        public MessageServices(IMessageRepository messageRepository)
         {
             this.messageRepository = messageRepository;
         }

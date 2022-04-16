@@ -4,18 +4,13 @@ using Persistence.DataBase;
 
 namespace Persistence.Repositories
 {
-    public class BillRepository : IGenericRepository<Bill>
+    public class BillRepository : IBillRepository
     {
         private readonly GlobaltekContext dbContext;
 
         public BillRepository(GlobaltekContext dbContext)
         {
             this.dbContext = dbContext;
-        }
-
-        public Bill Delete(Guid? id)
-        {
-            throw new NotImplementedException();
         }
 
         public Bill Get(Guid? id)
@@ -28,14 +23,5 @@ namespace Persistence.Repositories
             return dbContext.Bill.ToList();
         }
 
-        public Bill Insert(Bill @object)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Bill Update(Bill @object)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

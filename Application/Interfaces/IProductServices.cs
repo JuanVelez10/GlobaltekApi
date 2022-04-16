@@ -1,5 +1,4 @@
-﻿using Domain.Dtos;
-using Domain.Entities;
+﻿using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces
 {
-    public interface IBillDetailServices
+    public interface IProductServices
     {
-        Task<List<BillDetailInfo>> GetAllBillDetailInfo(Guid? id);
+        Task<Product> GetProduct(Guid? id);
+        Task<List<Product>> GetAllProducts();
     }
 }

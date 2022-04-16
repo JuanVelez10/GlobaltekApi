@@ -9,10 +9,10 @@ namespace Application.Services
 {
     public class PersonServices: IPersonServices
     {
-        private readonly IGenericRepository<Person> personRepository;
+        private readonly IPersonRepository personRepository;
         private readonly IMessageServices messageServices;
 
-        public PersonServices(IGenericRepository<Person> personRepository, IMessageServices messageServices)
+        public PersonServices(IPersonRepository personRepository, IMessageServices messageServices)
         {
             this.personRepository = personRepository;
             this.messageServices = messageServices;

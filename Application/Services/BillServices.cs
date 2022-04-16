@@ -8,12 +8,12 @@ namespace Application.Services
 {
     public class BillServices : IBillServices
     {
-        private readonly IGenericRepository<Bill> billRepository;
+        private readonly IBillRepository billRepository;
         private readonly IMapperService mapper;
         private readonly IPersonServices personService;
         private readonly IBillDetailServices billDetailServices;
 
-        public BillServices(IGenericRepository<Bill> billRepository, IMapperService mapper, IPersonServices personService,
+        public BillServices(IBillRepository billRepository, IMapperService mapper, IPersonServices personService,
             IBillDetailServices billDetailServices)
         {
             this.billRepository = billRepository;
@@ -39,15 +39,22 @@ namespace Application.Services
             return billsBasic;
         }
 
-        public async Task<Bill> GetBill(Guid? id)
+        public async Task<BillInfo> GetBill(Guid? id)
         {
-            var bill = billRepository.Get(id);
-            bill.BillDetails = await Task.Run(() =>
+            var billInfo = mapper.ConvertBillToBillInfo(billRepository.Get(id));
+
+            billInfo.Person = await Task.Run(() =>
             {
-                return billDetailServices.GetAllBillDetail().Result.Where(x => x.BillId == bill.Id).ToList();
+                return personService.GetPersonForId(billInfo.PersonId);
+            });
+
+
+            billInfo.BillDetails = await Task.Run(() =>
+            {
+                return billDetailServices.GetAllBillDetailInfo(billInfo.Id).Result;
             }); 
 
-            return bill;
+            return billInfo;
         }
 
     }

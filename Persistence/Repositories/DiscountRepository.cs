@@ -5,7 +5,7 @@ using Persistence.DataBase;
 
 namespace Persistence.Repositories
 {
-    public class DiscountRepository : IGenericRepository<Discount>
+    public class DiscountRepository : IDiscountRepository
     {
         private readonly GlobaltekContext dbContext;
 
@@ -14,29 +14,15 @@ namespace Persistence.Repositories
             this.dbContext = dbContext;
         }
 
-        public Discount Delete(Guid? id)
-        {
-            throw new NotImplementedException();
-        }
-
         public Discount Get(Guid? id)
         {
-            throw new NotImplementedException();
+            return dbContext.Discount.Where(x => x.Id == id).FirstOrDefault();
         }
 
         public List<Discount> GetAll()
         {
-            throw new NotImplementedException();
+            return dbContext.Discount.ToList();
         }
 
-        public Discount Insert(Discount @object)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Discount Update(Discount @object)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
