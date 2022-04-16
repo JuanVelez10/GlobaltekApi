@@ -61,7 +61,6 @@ namespace Api.Controllers
         //In this method an account is validated for login and a jwt token is generated
         [HttpPost]
         [Route("Login")]
-        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
 

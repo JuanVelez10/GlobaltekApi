@@ -1,10 +1,6 @@
-﻿
-using Application.Interfaces;
-using Application.Services;
-using System.ComponentModel.DataAnnotations;
-using static Domain.Enums.Enums;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Api.References
+namespace Web.Models
 {
     public class LoginRequest
     {
@@ -15,6 +11,5 @@ namespace Api.References
         [Required]
         [DataType(DataType.Password)]
         public string? Password { get; set; }
-
     }
 }
