@@ -4,6 +4,7 @@ using Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using static Domain.Enums.Enums;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -64,10 +65,7 @@ namespace Api.Controllers
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
 
-            var response = await Task.Run(() =>
-            {
-                return personService.GetPersonLogin(loginRequest.Email, loginRequest.Password).Result;
-            });
+            var response = await personService.GetPersonLogin(loginRequest.Email, loginRequest.Password);
 
             if (response != null && response.Data != null)
             {

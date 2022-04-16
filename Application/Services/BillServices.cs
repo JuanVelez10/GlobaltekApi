@@ -12,14 +12,18 @@ namespace Application.Services
         private readonly IMapperService mapper;
         private readonly IPersonServices personService;
         private readonly IBillDetailServices billDetailServices;
+        private readonly ITaxServices taxServices;
+        private readonly IDiscountServices discountServices;
 
         public BillServices(IBillRepository billRepository, IMapperService mapper, IPersonServices personService,
-            IBillDetailServices billDetailServices)
+            IBillDetailServices billDetailServices, ITaxServices taxServices, IDiscountServices discountServices)
         {
             this.billRepository = billRepository;
             this.mapper = mapper;
             this.personService = personService;
             this.billDetailServices = billDetailServices;
+            this.taxServices = taxServices;
+            this.discountServices = discountServices;
         }
 
 
@@ -43,16 +47,17 @@ namespace Application.Services
         {
             var billInfo = mapper.ConvertBillToBillInfo(billRepository.Get(id));
 
-            billInfo.Person = await Task.Run(() =>
-            {
-                return personService.GetPersonForId(billInfo.PersonId);
-            });
+            var person = await personService.GetPersonForId(billInfo.PersonId);
 
-
-            billInfo.BillDetails = await Task.Run(() =>
+            if (person != null)
             {
-                return billDetailServices.GetAllBillDetailInfo(billInfo.Id).Result;
-            }); 
+                billInfo.NamePerson = person.Name;
+                billInfo.DocumenPerson = person.Document;
+            }
+
+            billInfo.Discount = await discountServices.GetDiscount(billInfo.DiscountId);
+            billInfo.Tax = await taxServices.GetTax(billInfo.TaxId);
+            billInfo.BillDetails = await billDetailServices.GetAllBillDetailInfoForIdBill(billInfo.Id);
 
             return billInfo;
         }

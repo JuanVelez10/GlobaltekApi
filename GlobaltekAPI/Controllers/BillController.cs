@@ -22,11 +22,7 @@ namespace Api.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Get()
         {
-            var bills = await Task.Run(() =>
-            {
-                return billService.GetAllBillBasic().Result;
-            });
-
+            var bills = await billService.GetAllBillBasic();
             if (bills.Any()) return Ok(bills);
             return NotFound(bills);
         }
@@ -36,11 +32,7 @@ namespace Api.Controllers
         [Authorize(Roles = "Admin,Client")]
         public async Task<IActionResult> Get(Guid? id)
         {
-            var bill = await Task.Run(() =>
-            {
-                return billService.GetBill(id).Result;
-            });
-
+            var bill = await billService.GetBill(id);
             if (bill != null) return Ok(bill);
             return NotFound(bill);
         }

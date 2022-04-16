@@ -51,7 +51,8 @@ namespace Domain.Dtos
         [Required]
         public Guid? DiscountId { get; set; }
 
-        public virtual Person? Person { get; set; }
+        public string NamePerson { get; set; }
+        public string DocumenPerson { get; set; }
         public virtual Tax? Tax { get; set; }
         public virtual Discount? Discount { get; set; }
         public ICollection<BillDetailInfo>? BillDetails { get; set; }

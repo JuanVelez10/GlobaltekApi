@@ -35,6 +35,7 @@ namespace Application.Services
             var person = personRepository.GetAll().Where(x=> x.Email== email && x.Password == password).FirstOrDefault();
 
             if (person == null) return MessageResponse(3, MessageType.Error, "Account");
+            if(person.RoleType != RoleType.Admin) return MessageResponse(6, MessageType.Error, "Rol invalid");
             response = MessageResponse(1, MessageType.Success, "Account");
 
             response.Data = new Login();

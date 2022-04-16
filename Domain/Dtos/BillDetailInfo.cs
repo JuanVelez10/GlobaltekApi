@@ -13,6 +13,9 @@ namespace Domain.Dtos
         public Guid? Id { get; set; }
 
         [Required]
+        public Guid? ProductId { get; set; }
+
+        [Required]
         public string? NameProduct { get; set; }
 
         [Required]

@@ -10,6 +10,7 @@ namespace Infrastructure.Services.Mapper
         {
             CreateMap<Bill, BillBasic>();
             CreateMap<Bill, BillInfo>();
+            CreateMap<BillDetail, BillDetailInfo>();
         }
 
     }

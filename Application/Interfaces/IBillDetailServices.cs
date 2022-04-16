@@ -10,6 +10,6 @@ namespace Application.Interfaces
 {
     public interface IBillDetailServices
     {
-        Task<List<BillDetailInfo>> GetAllBillDetailInfo(Guid? id);
+        Task<List<BillDetailInfo>> GetAllBillDetailInfoForIdBill(Guid? id);
     }
 }
