@@ -25,7 +25,7 @@ namespace Persistence.Repositories
 
         public List<BillDetail> GetAll()
         {
-            throw new NotImplementedException();
+            return dbContext.BillDetail.ToList();
         }
 
         public BillDetail Insert(BillDetail @object)

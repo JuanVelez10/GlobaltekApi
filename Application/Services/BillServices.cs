@@ -11,12 +11,15 @@ namespace Application.Services
         private readonly IGenericRepository<Bill> billRepository;
         private readonly IMapperService mapper;
         private readonly IPersonServices personService;
+        private readonly IBillDetailServices billDetailServices;
 
-        public BillServices(IGenericRepository<Bill> billRepository, IMapperService mapper, IPersonServices personService)
+        public BillServices(IGenericRepository<Bill> billRepository, IMapperService mapper, IPersonServices personService,
+            IBillDetailServices billDetailServices)
         {
             this.billRepository = billRepository;
             this.mapper = mapper;
             this.personService = personService;
+            this.billDetailServices = billDetailServices;
         }
 
 
@@ -36,7 +39,16 @@ namespace Application.Services
             return billsBasic;
         }
 
+        public async Task<Bill> GetBill(Guid? id)
+        {
+            var bill = billRepository.Get(id);
+            bill.BillDetails = await Task.Run(() =>
+            {
+                return billDetailServices.GetAllBillDetail().Result.Where(x => x.BillId == bill.Id).ToList();
+            }); 
 
+            return bill;
+        }
 
     }
 }

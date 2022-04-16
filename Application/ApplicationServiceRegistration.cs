@@ -12,6 +12,8 @@ namespace Application
             services.AddTransient<IBillServices, BillServices>();
             services.AddTransient<IPersonServices, PersonServices>();
             services.AddTransient<IMessageServices, MessageServices>();
+            services.AddTransient<IBillDetailServices, BillDetailServices>();
+            
             return services;
         }
 

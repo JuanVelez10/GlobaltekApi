@@ -1,10 +1,14 @@
 ﻿
 using Domain.Dtos;
+using Domain.Entities;
 
 namespace Application.Interfaces
 {
     public interface IBillServices
     {
-        public Task<List<BillBasic>> GetAllBillBasic();
+        Task<List<BillBasic>> GetAllBillBasic();
+
+        Task<Bill> GetBill(Guid? id);
+
     }
 }

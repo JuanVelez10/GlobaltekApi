@@ -34,9 +34,15 @@ namespace Api.Controllers
         // GET api/<BillController>/5
         [HttpGet("{id}")]
         [Authorize(Roles = "Admin,Client")]
-        public string Get(int id)
+        public async Task<IActionResult> Get(Guid? id)
         {
-            return "value";
+            var bill = await Task.Run(() =>
+            {
+                return billService.GetBill(id).Result;
+            });
+
+            if (bill != null) return Ok(bill);
+            return NotFound(bill);
         }
 
         // POST api/<BillController>
