@@ -18,6 +18,11 @@ namespace Application.Services
             this.messageServices = messageServices;
         }
 
+        public async Task<List<Person>> GetAllPerson()
+        {
+            return personRepository.GetAll();
+        }
+
         //Method to obtain an person for id
         public async Task<Person> GetPersonForId(Guid? id)
         {

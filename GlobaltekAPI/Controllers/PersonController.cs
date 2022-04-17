@@ -2,9 +2,7 @@
 using Api.References;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using static Domain.Enums.Enums;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -26,18 +24,14 @@ namespace Api.Controllers
         }
 
 
-        // GET api/<PersonController>/5
-        [HttpGet("{id}")]
-        [Authorize(Roles = "Admin,Client")]
-        public string Get(int id)
+        // GET api/<PersonController>
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Get()
         {
-            return "value";
-        }
-
-        // POST api/<PersonController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
+            var response = await personService.GetAllPerson();
+            if (response.Any()) return Ok(response);
+            return NotFound(response);
         }
 
         // GET api/<AccountController>
