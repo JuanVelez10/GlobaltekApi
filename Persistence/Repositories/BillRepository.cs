@@ -33,13 +33,19 @@ namespace Persistence.Repositories
         {
             using (var dbContextTransaction = dbContext.Database.BeginTransaction())
             {
-
                 try
                 {
+                    bill.Id = Guid.NewGuid();
+
+                    var billDetails = bill.BillDetails;
+                    bill.BillDetails = null;
+
                     dbContext.Bill.Add(bill);
 
-                    foreach (var billDetail in bill.BillDetails)
+                    foreach (var billDetail in billDetails)
                     {
+                        billDetail.Id = Guid.NewGuid();
+                        billDetail.BillId = bill.Id;
                         dbContext.BillDetail.Add(billDetail);
                     }
 
@@ -47,7 +53,7 @@ namespace Persistence.Repositories
                     dbContextTransaction.Commit();
                     return true;
                 }
-                catch
+                catch(Exception ex)
                 {
                     dbContextTransaction.Rollback();
                     return false;
@@ -58,7 +64,47 @@ namespace Persistence.Repositories
 
         public bool Update(Bill bill)
         {
-            throw new NotImplementedException();
+
+            using (var dbContextTransaction = dbContext.Database.BeginTransaction())
+            {
+
+                try
+                {
+                    var billDetails = bill.BillDetails;
+                    bill.BillDetails = null;
+
+                    var billUpdate = Get(bill.Id); ;
+                    billUpdate.Date = bill.Date;
+                    billUpdate.DiscountId = bill.DiscountId;
+                    billUpdate.DiscountTotal = bill.DiscountTotal;
+                    billUpdate.PaymentType = bill.PaymentType;
+                    billUpdate.PersonId = bill.PersonId;
+                    billUpdate.SubTotal = bill.SubTotal;
+                    billUpdate.TaxId = bill.TaxId;
+                    billUpdate.TaxTotal = bill.TaxTotal;
+                    billUpdate.Total = bill.Total;
+
+                    var detailsOld = dbContext.BillDetail.Where(x => x.BillId == bill.Id).ToList();
+                    detailsOld.ForEach(x => dbContext.BillDetail.Remove(x));
+                    dbContext.SaveChanges();
+
+                    foreach (var billDetail in billDetails)
+                    {
+                        billDetail.Id = Guid.NewGuid();
+                        billDetail.BillId = bill.Id;
+                        dbContext.BillDetail.Add(billDetail);
+                    }
+
+                    dbContext.SaveChanges();
+                    dbContextTransaction.Commit();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    dbContextTransaction.Rollback();
+                    return false;
+                }
+            }
         }
     }
 }

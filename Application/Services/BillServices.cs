@@ -77,7 +77,7 @@ namespace Application.Services
         {
             BaseResponse<bool> response = new BaseResponse<bool>();
 
-            response = Validate(billInfo, true);
+            response = Validate(billInfo, false);
             if (response.Code > 0) return response;
 
             var bill = await CalculateBill(billInfo);
@@ -94,7 +94,21 @@ namespace Application.Services
 
         public async Task<BaseResponse<bool>> Update(BillInfo billInfo)
         {
-            throw new NotImplementedException();
+            BaseResponse<bool> response = new BaseResponse<bool>();
+
+            response = Validate(billInfo, true);
+            if (response.Code > 0) return response;
+
+            var bill = await CalculateBill(billInfo);
+
+            var save = billRepository.Update(bill);
+
+            if (!save) return MessageResponse(6, MessageType.Error);
+
+            response = MessageResponse(1, MessageType.Success, "Bill");
+            response.Data = save;
+
+            return response;
         }
 
         private async Task<Bill> CalculateBill(BillInfo billInfo)
@@ -136,7 +150,7 @@ namespace Application.Services
             if (!billInfo.PersonId.HasValue) return MessageResponse(4, MessageType.Error, "PersonId");
             if (!billInfo.DiscountId.HasValue) return MessageResponse(4, MessageType.Error, "DiscountId");
             if (!billInfo.TaxId.HasValue) return MessageResponse(4, MessageType.Error, "TaxId");
-            if (billInfo.Date != null) return MessageResponse(4, MessageType.Error, "Date");
+            if (billInfo.Date == null) return MessageResponse(4, MessageType.Error, "Date");
             if ((int)billInfo.PaymentType < 0) return MessageResponse(4, MessageType.Error, "PaymentType");
             if (!billInfo.BillDetails.Any()) return MessageResponse(4, MessageType.Error, "BillDetails");
 

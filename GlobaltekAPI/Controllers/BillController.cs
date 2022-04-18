@@ -48,8 +48,8 @@ namespace Api.Controllers
             return BadRequest(response);
         }
 
-        // PUT api/<BillController>/5
-        [HttpPut("{id}")]
+        // PUT api/<BillController>
+        [HttpPut]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Put([FromBody] BillInfo billInfo)
         {
