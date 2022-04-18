@@ -16,7 +16,30 @@ namespace Persistence.Repositories
 
         public bool Delete(Guid? id)
         {
-            throw new NotImplementedException();
+            using (var dbContextTransaction = dbContext.Database.BeginTransaction())
+            {
+
+                try
+                {
+
+                    var bill = Get(id);
+
+                    var detailsOld = dbContext.BillDetail.Where(x => x.BillId == id).ToList();
+                    detailsOld.ForEach(x => dbContext.BillDetail.Remove(x));
+
+                    dbContext.Bill.Remove(bill);
+
+                    dbContext.SaveChanges();
+                    dbContextTransaction.Commit();
+                }
+                catch
+                {
+                    dbContextTransaction.Rollback();
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public Bill Get(Guid? id)
@@ -73,7 +96,7 @@ namespace Persistence.Repositories
                     var billDetails = bill.BillDetails;
                     bill.BillDetails = null;
 
-                    var billUpdate = Get(bill.Id); ;
+                    var billUpdate = Get(bill.Id); 
                     billUpdate.Date = bill.Date;
                     billUpdate.DiscountId = bill.DiscountId;
                     billUpdate.DiscountTotal = bill.DiscountTotal;
@@ -86,7 +109,6 @@ namespace Persistence.Repositories
 
                     var detailsOld = dbContext.BillDetail.Where(x => x.BillId == bill.Id).ToList();
                     detailsOld.ForEach(x => dbContext.BillDetail.Remove(x));
-                    dbContext.SaveChanges();
 
                     foreach (var billDetail in billDetails)
                     {

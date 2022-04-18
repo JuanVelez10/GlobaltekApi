@@ -35,7 +35,20 @@ namespace Application.Services
 
         public async Task<BaseResponse<bool>> Delete(Guid? id)
         {
-            throw new NotImplementedException();
+            BaseResponse<bool> reponse = new BaseResponse<bool>();
+
+            if (!id.HasValue) return MessageResponse(4, MessageType.Error, "Bill");
+            var exits = billRepository.Get(id);
+            if (exits == null) return MessageResponse(3, MessageType.Error, "Bill");
+
+            var delete = billRepository.Delete(id);
+            if (!delete) return MessageResponse(6, MessageType.Error);
+
+            reponse = MessageResponse(1, MessageType.Success, "Bill");
+            reponse.Data = delete;
+
+            return reponse;
+
         }
 
         public async Task<List<BillBasic>> GetAllBillBasic()
