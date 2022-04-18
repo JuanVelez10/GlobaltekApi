@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Domain.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,22 +41,31 @@ namespace Api.Controllers
         // POST api/<BillController>
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] BillInfo billInfo)
         {
+            var response = await billService.Insert(billInfo);
+            if (response != null) return Ok(response);
+            return BadRequest(response);
         }
 
         // PUT api/<BillController>/5
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put([FromBody] BillInfo billInfo)
         {
+            var response = await billService.Update(billInfo);
+            if (response != null) return Ok(response);
+            return BadRequest(response);
         }
 
         // DELETE api/<BillController>/5
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(Guid? id)
         {
+            var response = await billService.Delete(id);
+            if (response != null) return Ok(response);
+            return BadRequest(response);
         }
     }
 }

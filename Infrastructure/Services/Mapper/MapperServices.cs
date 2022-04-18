@@ -29,7 +29,16 @@ namespace Infrastructure.Services.Mapper
         {
             return mapper.Map<BillDetailInfo>(billDetail);
         }
-        
+
+        public BillDetail ConvertBillDetailInfoToBillDetail(BillDetailInfo billDetailInfo)
+        {
+            return mapper.Map<BillDetail>(billDetailInfo);
+        }
+
+        public Bill ConvertBillInfoToBill(BillInfo billInfo)
+        {
+            return mapper.Map<Bill>(billInfo);
+        }
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿
+using Application.References;
 using Domain.Dtos;
 using Domain.Entities;
 
@@ -10,5 +11,10 @@ namespace Application.Interfaces
 
         Task<BillInfo> GetBill(Guid? id);
 
+        Task<BaseResponse<bool>> Update(BillInfo billInfo);
+
+        Task<BaseResponse<bool>> Insert(BillInfo billInfo);
+
+        Task<BaseResponse<bool>> Delete(Guid? id);
     }
 }

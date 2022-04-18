@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Domain.Dtos;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,8 @@ namespace Application.Contracts.Persistence
     {
         Bill Get(Guid? id);
         List<Bill> GetAll();
+        bool Insert(Bill bill);
+        bool Delete(Guid? id);
+        bool Update(Bill bill);
     }
 }
